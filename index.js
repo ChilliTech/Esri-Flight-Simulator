@@ -28,7 +28,7 @@ function (
 
         // Plane flight details
         var lastTime = null;
-        var speed = 200; // m/s
+        var speed = 400; // m/s
         var heading = 0;
         var location = new Point({
             x: 779232,
@@ -59,29 +59,8 @@ function (
                 tilt: 85
             }
         });
-        var viewLeft = new SceneView({
-            container: 'left-map',
-            map: map,
-            camera: {
-                heading: 270,
-                position: location,
-                tilt: 80
-            }
-        });
-        var viewRight = new SceneView({
-            container: 'right-map',
-            map: map,
-            camera: {
-                heading: 90,
-                position: location,
-                tilt: 80
-            }
-        });
-
         viewMain.ui.components = ['compass', 'zoom'];
         viewForward.ui.components = [];
-        viewLeft.ui.components = [];
-        viewRight.ui.components = [];
 
         window.requestAnimationFrame(draw);
 
@@ -106,24 +85,7 @@ function (
                     position: location,
                     tilt: 85
                 });
-                viewLeft.camera = new Camera({
-                    heading: heading - 90,
-                    position: location,
-                    tilt: 80
-                });
-                viewRight.camera = new Camera({
-                    heading: heading + 90,
-                    position: location,
-                    tilt: 80
-                });
-
                 var geographic = webMercatorUtils.webMercatorToGeographic(location);
-
-                $('#dial-speed').html(format.format(',')(speed) + ' m/s');
-                $('#dial-altitude').html(format.format(',')(location.z) + ' m');
-                $('#dial-heading').html(format.format(',')(heading) + '°');
-                $('#dial-location-x').html(ConvertDDToDMS(geographic.x, true));
-                $('#dial-location-y').html(ConvertDDToDMS(geographic.y, false));
             }
             lastTime = time;
             requestAnimationFrame(draw);
